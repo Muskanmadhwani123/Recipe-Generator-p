@@ -1,0 +1,27 @@
+{
+  "name": "recipe-generator-p",
+  "version": "1.0.0",
+  "description": "This project is a web application that generates recipes from a food image. The user uploads an image of food, and the system detects the food item using a Machine Learning model and then displays the recipe.  The image recognition is performed using the pretrained model MobileNetV2 from TensorFlow and served through a Flask API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Muskanmadhwani123/Recipe-Generator-p.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Muskanmadhwani123/Recipe-Generator-p/issues"
+  },
+  "homepage": "https://github.com/Muskanmadhwani123/Recipe-Generator-p#readme",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "form-data": "^4.0.5",
+    "multer": "^2.1.1"
+  }
+}
