@@ -5,10 +5,13 @@ const fs = require("fs");
 const FormData = require("form-data");
 
 const app = express();
+const cors = require("cors");
+app.use(cors());
 
 const upload = multer({ dest: "uploads/" });
 
 app.post("/upload", upload.single("image"), async (req, res) => {
+
 
     const form = new FormData();
     form.append("image", fs.createReadStream(req.file.path));
@@ -21,7 +24,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
             { headers: form.getHeaders() }
         );
 
-        res.json(response.data);
+        res.json({ food: response.data.prediction });
 
     } catch (error) {
         res.status(500).send("Error connecting to ML API");

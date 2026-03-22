@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipe Generator</title>
+</head>
+
+<body>
+
+<h2>Upload Food Image</h2>
+
+<input type="file" id="imageInput">
+
+<button type="button" onclick="uploadImage(event)">Detect Food</button>
+<p id="result"></p>
+
+<script>
+
+//document.getElementById("detectBtn").addEventListener("click", uploadImage);
+
+async function uploadImage(event){
+    if(event) event.preventDefault(); 
+
+    console.log("Button clicked");
+
+    const fileInput = document.getElementById("imageInput");
+    const file = fileInput.files[0];
+
+    if(!file){
+        alert("Please select an image");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    console.log("Before fetch");
+
+    try{
+
+        const response = await fetch("http://127.0.0.1:3000/upload",{
+            method:"POST",
+            body: formData
+        });
+
+        console.log("After fetch");
+
+        //const text = await response.text();
+        //console.log("Sever response: ",text);
+
+        const data = await response.json();
+
+        console.log("Data: ",data);
+
+        document.getElementById("result").innerText ="Detected Food: " + data.food;
+
+    }
+    catch(error){
+        console.log("Error:", error);
+        alert("Error: "+error.message);
+    }
+
+}
+
+</script>
+
+</body>
+</html>
