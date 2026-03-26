@@ -4,165 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SnapRecipe</title>
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-        }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                              radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                              radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 24px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            text-align: center;
-        }
-
-        h2 {
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-            font-size: 1.75rem;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Professional Upload Area */
-        .upload-container {
-            position: relative;
-            border: 2px dashed #cbd5e1;
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            background: #f1f5f9;
-            cursor: pointer;
-            margin-bottom: 1.5rem;
-        }
-
-        .upload-container:hover {
-            border-color: var(--accent);
-            background: #eff6ff;
-        }
-
-        .upload-icon {
-            font-size: 2rem;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        input[type="file"] {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        #preview {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-top: 1rem;
-            display: none;
-            border: 1px solid #e2e8f0;
-        }
-
-        /* Action Button */
-        button {
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        button:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        /* Result Card */
-        #result {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 12px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            display: none;
-            text-align: left;
-            animation: slideUp 0.4s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Spinner Effect */
-        .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #ffffff;
-            border-bottom-color: transparent;
-            border-radius: 50%;
-            display: none;
-            animation: rotation 1s linear infinite;
-        }
-
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        #result {
-            max-height: 400px;
-             overflow-y: auto;
-        }
-    </style>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -172,7 +19,7 @@
 
     <div class="upload-container">
         <span class="upload-icon">📸</span>
-        <span id="file-text" style="font-weight: 500; color: #475569;">Click or Drag Image</span>
+        <span id="file-text">Click or Drag Image</span>
         <input type="file" id="imageInput" accept="image/*" onchange="previewImage()">
         <img id="preview" />
     </div>
@@ -183,97 +30,13 @@
     </button>
 
     <div id="result">
-        <small style="text-transform: uppercase; color: var(--accent); font-weight: 700; letter-spacing: 1px;">Analysis Complete</small>
-        <div id="foodName" style="font-size: 1.2rem; margin-top: 5px; color: var(--text-main);"></div>
+        <small class="result-title">Analysis Complete</small>
+        <div id="foodName"></div>
     </div>
 </div>
 
-<script>
-function previewImage(){
-    const file = document.getElementById("imageInput").files[0];
-    const preview = document.getElementById("preview");
-    const fileText = document.getElementById("file-text");
-
-    if(file){
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-        fileText.innerText = "File: " + file.name;
-    }
-}
-
-async function uploadImage(event){
-    if(event) event.preventDefault();
-
-    const fileInput = document.getElementById("imageInput");
-    const file = fileInput.files[0];
-    const btnText = document.getElementById("btnText");
-    const spinner = document.getElementById("btnSpinner");
-    const uploadBtn = document.getElementById("uploadBtn");
-    const resultDiv = document.getElementById("result");
-    const foodName = document.getElementById("foodName");
-
-    if(!file){
-        alert("Please select an image to analyze.");
-        return;
-    }
-
-    // UI Loading State
-    uploadBtn.disabled = true;
-    spinner.style.display = "inline-block";
-    
-    btnText.innerText = "Detecting Dish...";
-    setTimeout(() => {
-        btnText.innerText = "Fetching Recipe...";
-    }, 1500);
-
-
-    resultDiv.style.display = "none";
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-        const response = await fetch("http://127.0.0.1:3000/upload", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || "Something went wrong");
-        }
-        
-        // Show Results
-        resultDiv.style.display = "block";
-        foodName.innerHTML = `
-    <h3>🍽️ ${data.title}</h3>
-    <img src="${data.image}" style="width:100%; border-radius:10px; margin:10px 0;" />
-
-    <h4>🧾 Ingredients:</h4>
-    <ul>
-        ${data.ingredients.map(i => `<li>${i}</li>`).join("")}
-    </ul>
-
-    <h4>👨‍🍳 Instructions:</h4>
-    ${data.instructions
-    .split(". ")
-    .map(step => `<p>👉 ${step}</p>`)
-    .join("")}
-
-    <button onclick="location.reload()">Try Another Recipe 🔄</button>
-`;
-        
-    } catch(error) {
-        alert("System Error: " + error.message);
-    } finally {
-        // Reset Button State
-        uploadBtn.disabled = false;
-        spinner.style.display = "none";
-        btnText.innerText = "Generate Recipe";
-    }
-}
-</script>
+<!-- External JS -->
+<script src="script.js"></script>
 
 </body>
 </html>
